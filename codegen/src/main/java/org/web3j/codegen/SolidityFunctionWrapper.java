@@ -120,7 +120,7 @@ public class SolidityFunctionWrapper extends Generator {
                     + "or the "
                     + SolidityFunctionWrapperGenerator.class.getName()
                     + " in the \n"
-                    + "<a href=\"https://github.com/web3j/web3j/tree/master/codegen\">"
+                    + "<a href=\"https://github.com/hyperledger/web3j/tree/main/codegen\">"
                     + "codegen module</a> to update.\n";
 
     private final boolean useNativeJavaTypes;
@@ -129,7 +129,7 @@ public class SolidityFunctionWrapper extends Generator {
     private final boolean abiFuncs;
     private final int addressLength;
 
-    private final HashMap<Integer, ClassName> structClassNameMap = new HashMap<>();
+    private final HashMap<String, ClassName> structClassNameMap = new HashMap<>();
 
     private final List<NamedType> structsNamedTypeList = new ArrayList<>();
 
@@ -457,20 +457,29 @@ public class SolidityFunctionWrapper extends Generator {
         final List<AbiDefinition.NamedType> orderedKeys = extractStructs(functionDefinitions);
         int structCounter = 0;
         final List<TypeSpec> structs = new ArrayList<>();
+        final Map<String, Integer> structNamesCountPreview = new HashMap<>();
+
+        for (final AbiDefinition.NamedType namedType : orderedKeys) {
+            final String internalType = namedType.getInternalType();
+            if (internalType != null && !internalType.isEmpty()) {
+                final String structName = getStructName(internalType);
+                structNamesCountPreview.putIfAbsent(structName, 0);
+                structNamesCountPreview.compute(structName, (s, count) -> count + 1);
+            }
+        }
+
         for (final AbiDefinition.NamedType namedType : orderedKeys) {
             final String internalType = namedType.getInternalType();
             final String structName;
             if (internalType == null || internalType.isEmpty()) {
                 structName = "Struct" + structCounter;
             } else {
-                final String fullStructName =
-                        internalType.substring(internalType.lastIndexOf(" ") + 1);
-                final String tempStructName =
-                        fullStructName.substring(fullStructName.lastIndexOf(".") + 1);
-                structName =
-                        SourceVersion.isName(tempStructName)
-                                ? tempStructName
-                                : "_" + tempStructName;
+                String tempStructName = getStructName(internalType);
+                if (structNamesCountPreview.getOrDefault(tempStructName, 0) > 1) {
+                    structName = getStructName(internalType.replace(".", "_"));
+                } else {
+                    structName = tempStructName;
+                }
             }
 
             final TypeSpec.Builder builder =
@@ -574,6 +583,15 @@ public class SolidityFunctionWrapper extends Generator {
         return structs;
     }
 
+    @NotNull
+    private static String getStructName(String internalType) {
+        final String fullStructName = internalType.substring(internalType.lastIndexOf(" ") + 1);
+        String tempStructName = fullStructName.substring(fullStructName.lastIndexOf(".") + 1);
+        final String structName =
+                SourceVersion.isName(tempStructName) ? tempStructName : "_" + tempStructName;
+        return structName;
+    }
+
     private String adjustToNativeTypeIfNecessary(NamedType component) {
         if (useNativeJavaTypes && structClassNameMap.get(component.structIdentifier()) == null) {
             if (ARRAY_SUFFIX.matcher(component.getType()).find()
@@ -589,6 +607,7 @@ public class SolidityFunctionWrapper extends Generator {
     }
 
     private NamedType normalizeNamedType(NamedType namedType) {
+        // dynamic array
         if (namedType.getType().endsWith("[]") && namedType.getInternalType().endsWith("[]")) {
             return new NamedType(
                     namedType.getName(),
@@ -598,6 +617,18 @@ public class SolidityFunctionWrapper extends Generator {
                             .getInternalType()
                             .substring(0, namedType.getInternalType().length() - 2),
                     namedType.isIndexed());
+        } else if (namedType.getType().startsWith("tuple[")
+                && namedType.getInternalType().contains("[")
+                && namedType.getInternalType().endsWith("]")) { // static array
+
+            return new NamedType(
+                    namedType.getName(),
+                    namedType.getType().substring(0, namedType.getType().indexOf("[")),
+                    namedType.getComponents(),
+                    namedType
+                            .getInternalType()
+                            .substring(0, namedType.getInternalType().indexOf("[")),
+                    namedType.isIndexed());
         } else {
             return namedType;
         }
@@ -606,7 +637,7 @@ public class SolidityFunctionWrapper extends Generator {
     @NotNull
     private List<AbiDefinition.NamedType> extractStructs(
             final List<AbiDefinition> functionDefinitions) {
-        final HashMap<Integer, AbiDefinition.NamedType> structMap = new LinkedHashMap<>();
+        final HashMap<String, AbiDefinition.NamedType> structMap = new LinkedHashMap<>();
         functionDefinitions.stream()
                 .flatMap(
                         definition -> {
@@ -1475,7 +1506,10 @@ public class SolidityFunctionWrapper extends Generator {
         // Create function that returns the ABI encoding of the Solidity function call.
         if (abiFuncs) {
             functionName = "getABI_" + functionName;
-            methodBuilder = MethodSpec.methodBuilder(functionName).addModifiers(Modifier.PUBLIC);
+            methodBuilder =
+                    MethodSpec.methodBuilder(functionName)
+                            .addModifiers(Modifier.PUBLIC)
+                            .addModifiers(Modifier.STATIC);
             addParameters(methodBuilder, functionDefinition.getInputs());
             buildAbiFunction(functionDefinition, methodBuilder, inputParams, useUpperCase);
             results.add(methodBuilder.build());
@@ -2266,7 +2300,7 @@ public class SolidityFunctionWrapper extends Generator {
             return namedType.isIndexed();
         }
 
-        public int structIdentifier() {
+        public String structIdentifier() {
             return namedType.structIdentifier();
         }
     }
