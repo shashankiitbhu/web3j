@@ -7,9 +7,9 @@ dependencies {
 }
 
 tasks.named("spotlessJava").configure {
-    dependsOn("spotlessGroovyGradle", "compileJava", "compileTestJava", "javadoc", "test", "jacocoTestReport")
+    dependsOn("spotlessGroovyGradle", "compileJava", "compileTestJava", "test", "jacocoTestReport")
 }
 
 tasks.named("spotlessKotlin").configure {
-    dependsOn("compileJava", "spotlessJava", "spotlessGroovyGradle", "compileTestJava", "processTestResources", "javadoc", "test", "jacocoTestReport")
+    dependsOn("compileJava", "spotlessJava", "spotlessGroovyGradle", "compileTestJava", "processTestResources", "test", "jacocoTestReport")
 }

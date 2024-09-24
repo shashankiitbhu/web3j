@@ -1,5 +1,14 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.1.0' // or the latest stable version
+    }
+}
+
 plugins {
-    id 'java'
     id 'idea'
     id 'org.sonarqube' version '5.0.0.4638'
     id 'jacoco'
@@ -42,8 +51,6 @@ description 'Web3j base project.'
 
 [
     'jacoco',
-    'java',
-    'javadoc',
     'publish',
     'repositories',
     'spotless'
@@ -60,8 +67,6 @@ description 'Web3j base project.'
 allprojects {
     apply {
         [
-            'java',
-            'javadoc',
             'repositories',
             'spotless'
         ].each { buildScript ->
@@ -74,9 +79,9 @@ allprojects {
         useJUnitPlatform()
     }
 
+
+
     dependencies {
-        testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion"
-        testImplementation "org.mockito:mockito-junit-jupiter:$mockitoJunitVersion"
 
         configurations.all {
             resolutionStrategy {
@@ -104,3 +109,6 @@ configure(subprojects.findAll { it.name != 'integration-tests' }) {
 
 tasks.named("spotlessJava").configure { dependsOn("spotlessGroovyGradle") }
 tasks.named("spotlessKotlin").configure { dependsOn("spotlessJava", "spotlessGroovyGradle") }
+
+
+

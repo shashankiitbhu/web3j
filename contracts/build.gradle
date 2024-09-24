@@ -5,5 +5,5 @@ dependencies {
     implementation project(':core')
     testImplementation project(path: ':core', configuration: 'testArtifacts')
 }
-tasks.named("spotlessJava").configure { dependsOn("compileJava","javadoc","processResources","spotlessGroovyGradle") }
-tasks.named("spotlessKotlin").configure { dependsOn("compileJava","javadoc","processResources","spotlessJava","spotlessGroovyGradle") }
+tasks.named("spotlessJava").configure { dependsOn("compileJava","processResources","spotlessGroovyGradle") }
+tasks.named("spotlessKotlin").configure { dependsOn("compileJava","processResources","spotlessJava","spotlessGroovyGradle") }

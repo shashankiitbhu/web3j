@@ -1,0 +1,63 @@
+plugins {
+    id 'com.android.library'
+    id 'idea'
+    id 'org.sonarqube' version '5.0.0.4638'
+    id 'jacoco'
+    id 'com.diffplug.spotless' version '6.25.0'
+    id 'de.marcphilipp.nexus-publish' version '0.4.0'
+    id 'de.undercouch.download' version '4.1.2'
+    id 'org.ajoberstar.git-publish' version '3.0.1'
+    id 'io.codearte.nexus-staging' version '0.30.0' apply false // Disable automatic apply
+}
+
+android {
+    namespace 'com.copsiitbhu.androidmodule'
+    compileSdk 34
+
+    defaultConfig {
+        minSdk 24
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
+
+allprojects {
+
+    tasks.withType(Test) {
+        reports.html.destination = file("${reporting.baseDir}/${name}")
+        useJUnitPlatform()
+    }
+
+    repositories {
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
+        mavenCentral()
+        maven { url "https://artifacts.consensys.net/public/maven/maven/" }
+        maven { url "https://hyperledger.jfrog.io/artifactory/besu-maven/" } // Add this if needed
+    }
+}
