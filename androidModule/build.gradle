@@ -49,13 +49,7 @@ allprojects {
     }
 
     repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
+        google() // Google's repository for AndroidX
         mavenCentral()
         maven { url "https://artifacts.consensys.net/public/maven/maven/" }
         maven { url "https://hyperledger.jfrog.io/artifactory/besu-maven/" } // Add this if needed
