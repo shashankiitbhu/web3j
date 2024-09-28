@@ -1,3 +1,6 @@
+plugins {
+    id 'java-library'
+}
 
 description 'web3j support for Ethereum Improvement Proposals (EIP\'s)'
 

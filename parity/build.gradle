@@ -1,4 +1,6 @@
-
+plugins {
+    id 'java-library'
+}
 description 'Parity JSON-RPC API'
 
 dependencies {

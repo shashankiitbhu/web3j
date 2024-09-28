@@ -81,7 +81,6 @@ classes { dependsOn createProperties }
 
 configurations { testArtifacts.extendsFrom testRuntime }
 
-artifacts { testArtifacts testsJar }
 
 tasks.named("spotlessJava").configure {
     dependsOn("spotlessGroovyGradle", "compileJava", "compileTestJava", "test", "jacocoTestReport")

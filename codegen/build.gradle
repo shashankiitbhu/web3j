@@ -1,17 +1,28 @@
+
+plugins {
+    id 'java-library'
+    id 'application'
+}
 description 'web3j project code generators'
 
 dependencies {
-    implementation project(':core'),
-            "com.squareup:kotlinpoet:$kotlinPoetVersion",
-            "com.squareup:javapoet:$javaPoetVersion",
-            "info.picocli:picocli:$picocliVersion"
-    testImplementation project(':core').sourceSets.test.output,
-            "ch.qos.logback:logback-core:$logbackVersion",
-            "ch.qos.logback:logback-classic:$logbackVersion"
-    implementation("org.junit.platform:junit-platform-launcher:$junitPlatformLauncherVersion")
-    implementation("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
-    implementation("org.junit.vintage:junit-vintage-engine:$junitVersion")
+    // Separate each dependency into its own line
+    implementation project(':core')
+    implementation "com.squareup:kotlinpoet:$kotlinPoetVersion"
+    implementation "com.squareup:javapoet:$javaPoetVersion"
+    implementation "info.picocli:picocli:$picocliVersion"
+
+    // Test dependencies
+//    testImplementation project(':core').sourceSets.androidTest.output
+    testImplementation "ch.qos.logback:logback-core:$logbackVersion"
+    testImplementation "ch.qos.logback:logback-classic:$logbackVersion"
+
+    // JUnit dependencies
+    implementation "org.junit.platform:junit-platform-launcher:$junitPlatformLauncherVersion"
+    implementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+    implementation "org.junit.vintage:junit-vintage-engine:$junitVersion"
 }
+
 
 file("src/test/resources/solidity").listFiles().each { File file ->
     def contractFile = file.listFiles().find({
