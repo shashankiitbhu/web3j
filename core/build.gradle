@@ -1,0 +1,92 @@
+import java.text.SimpleDateFormat
+
+plugins {
+    id 'com.android.library' // Switch to Android library plugin
+    id 'org.ajoberstar.git-publish'
+}
+
+android {
+    compileSdkVersion 33
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 33
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java']
+        }
+        test {
+            java.srcDirs = ['src/test/java']
+        }
+    }
+}
+
+description 'web3j is a lightweight Java library for integration with Ethereum clients'
+
+dependencies {
+    implementation project(':abi'),
+            project(':crypto'),
+            project(':tuples'),
+            "com.github.jnr:jnr-unixsocket:$jnr_unixsocketVersion",
+            "com.squareup.okhttp3:okhttp:$okhttpVersion",
+            "com.squareup.okhttp3:logging-interceptor:$okhttpVersion",
+            "io.reactivex.rxjava2:rxjava:$rxjavaVersion",
+            "org.java-websocket:Java-WebSocket:$javaWebSocketVersion",
+            "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
+            "org.slf4j:slf4j-api:$slf4jVersion",
+            "io.github.adraffy:ens-normalize:$ensAdraffyVersion",
+            "io.tmio:tuweni-bytes:$tuweniVersion",
+            "io.tmio:tuweni-units:$tuweniVersion"
+    testImplementation project(path: ':crypto', configuration: 'testArtifacts'),
+            "nl.jqno.equalsverifier:equalsverifier:$equalsverifierVersion",
+            "ch.qos.logback:logback-classic:$logbackVersion"
+}
+
+def getTimestamp() {
+    Date today = new Date()
+    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S z")
+    df.setTimeZone(TimeZone.getTimeZone("UTC"))
+    return df.format(today)
+}
+
+ext {
+    docsPath = 'web3j/web3j-docs'
+    ghToken = System.getenv('GITHUB_TOKEN')
+}
+
+gitPublish {
+
+    if (ghToken) {
+        repoUri = "https://github.com/${docsPath}.git"
+    } else {
+        repoUri = "git@github.com:${docsPath}.git"
+    }
+
+    branch = 'main'
+
+    def coreDocs = files("${buildDir.path}/docs/javadoc/")
+
+    contents {
+        from(coreDocs) {
+            into '/docs/javadoc-api'
+        }
+    }
+
+    preserve {
+        include '/**'
+    }
+
+    commitMessage = 'Publishing a new page'
+}
+
+
+configurations { testArtifacts.extendsFrom testRuntime }
+
+

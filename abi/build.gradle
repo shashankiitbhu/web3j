@@ -1,0 +1,40 @@
+plugins {
+    id 'com.android.library' // Change from java-library to android library
+}
+
+android {
+    compileSdkVersion 33
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 33
+
+        // Additional config if needed like versionCode and versionName
+    }
+
+    // Define your source sets
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java']
+        }
+        test {
+            java.srcDirs = ['src/test/java']
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+description 'Ethereum Application Binary Interface (ABI) for working with smart contracts'
+
+dependencies {
+    api project(':utils') // Keep the project dependency as is
+
+    // Android-specific dependencies (add if necessary)
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
