@@ -1,11 +1,12 @@
 import java.text.SimpleDateFormat
 
 plugins {
-    id 'com.android.library' // Switch to Android library plugin
+    id 'com.android.library'
     id 'org.ajoberstar.git-publish'
 }
 
 android {
+    namespace 'com.org.web3j'
     compileSdkVersion 33
 
     defaultConfig {
@@ -44,6 +45,7 @@ dependencies {
             "io.github.adraffy:ens-normalize:$ensAdraffyVersion",
             "io.tmio:tuweni-bytes:$tuweniVersion",
             "io.tmio:tuweni-units:$tuweniVersion"
+    testImplementation 'junit:junit:4.13.2'
     testImplementation project(path: ':crypto', configuration: 'testArtifacts'),
             "nl.jqno.equalsverifier:equalsverifier:$equalsverifierVersion",
             "ch.qos.logback:logback-classic:$logbackVersion"

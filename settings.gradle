@@ -19,7 +19,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "tesLIb"
+rootProject.name = "web3j"
 include ':app'
 include ':web3j'
 include 'abi'

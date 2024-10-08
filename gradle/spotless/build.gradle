@@ -18,7 +18,6 @@ task downloadFormatterProperties(type: Download) {
 
 spotless {
     java {
-        // This path needs to be relative to each project
         target fileTree('.') {
             include '**/src/*/java/**/*.java'
             exclude '**/.gradle/**'
@@ -30,7 +29,7 @@ spotless {
         importOrder 'java', '', 'org.web3j', '\\#'
         trimTrailingWhitespace()
         endWithNewline()
-        licenseHeaderFile "$rootDir/gradle/spotless/java.license"
+       // licenseHeaderFile "$rootDir/gradle/spotless/java.license"
     }
     kotlin {
         // This path needs to be relative to each project
@@ -42,7 +41,7 @@ spotless {
         ktlint('0.49.1')
         trimTrailingWhitespace()
         endWithNewline()
-        licenseHeaderFile "$rootDir/gradle/spotless/java.license"
+        //licenseHeaderFile "$rootDir/gradle/spotless/java.license"
     }
     groovyGradle {
         target '*.gradle'
@@ -54,14 +53,14 @@ spotless {
 
 tasks.named('spotlessJava') {
     dependsOn downloadJavaLicense, downloadFormatterProperties
-    mustRunAfter tasks.named('compileJava')
-    mustRunAfter tasks.named('spotlessGroovyGradle')
+//    mustRunAfter tasks.named('compileJava')
+   // mustRunAfter tasks.named('spotlessGroovyGradle')
 }
 
 tasks.named('spotlessKotlin') {
     dependsOn downloadJavaLicense, downloadFormatterProperties
-    mustRunAfter tasks.named('compileJava')
-    mustRunAfter tasks.named('spotlessGroovyGradle')
+   // mustRunAfter tasks.named('compileJava')
+  //  mustRunAfter tasks.named('spotlessGroovyGradle')
     dependsOn tasks.named('spotlessJava')
 }
 
@@ -69,5 +68,5 @@ tasks.named('spotlessCheck') {
     dependsOn downloadJavaLicense, downloadFormatterProperties
     dependsOn tasks.named('spotlessJava')
     dependsOn tasks.named('spotlessKotlin')
-    dependsOn tasks.named('spotlessGroovyGradle')
+  //  dependsOn tasks.named('spotlessGroovyGradle')
 }

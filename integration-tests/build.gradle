@@ -4,6 +4,30 @@ plugins {
 
 description 'web3j integration tests'
 
+android {
+    namespace 'com.org.web3j'
+    compileSdkVersion 33
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 33
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java']
+        }
+        test {
+            java.srcDirs = ['src/test/java']
+        }
+    }
+}
+
 
 repositories {
     maven { url 'https://oss.sonatype.org/content/repositories/releases/' }
@@ -27,6 +51,7 @@ dependencies {
     testImplementation project(':parity')
     testImplementation project(':geth')
     testImplementation project(':codegen')
+    testImplementation 'junit:junit:4.13.2'
     testImplementation "ch.qos.logback:logback-core:$logbackVersion"
     testImplementation "ch.qos.logback:logback-classic:$logbackVersion"
     testImplementation "com.carrotsearch:junit-benchmarks:$junitBenchmarkVersion"
@@ -67,9 +92,9 @@ sourceSets {
 }
 
 
-compileTestJava {
-    dependsOn project(':codegen').getTasksByName("testClasses", false)
-}
+//compileTestJava {
+//    dependsOn project(':codegen').getTasksByName("testClasses", false)
+//}
 
-tasks.named("spotlessJava").configure { dependsOn("compileTestJava","spotlessGroovyGradle","processTestResources") }
-tasks.named("spotlessKotlin").configure { dependsOn("compileTestJava","spotlessJava", "spotlessGroovyGradle","processTestResources") }
+//tasks.named("spotlessJava").configure { dependsOn("compileTestJava","spotlessGroovyGradle","processTestResources") }
+//tasks.named("spotlessKotlin").configure { dependsOn("compileTestJava","spotlessJava", "spotlessGroovyGradle","processTestResources") }

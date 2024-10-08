@@ -12,17 +12,7 @@
  */
 package org.web3j.protocol.besu;
 
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.stream.Collectors;
-
-import io.reactivex.Flowable;
+import static java.util.Objects.requireNonNull;
 
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3jService;
@@ -58,7 +48,17 @@ import org.web3j.tx.response.PollingPrivateTransactionReceiptProcessor;
 import org.web3j.utils.Async;
 import org.web3j.utils.Base64String;
 
-import static java.util.Objects.requireNonNull;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.stream.Collectors;
+
+import io.reactivex.Flowable;
 
 public class JsonRpc2_0Besu extends JsonRpc2_0Eea implements Besu {
 

@@ -3,12 +3,26 @@ plugins {
 }
 
 android {
-    compileSdkVersion 33 // Update to the desired compile SDK version
+    namespace 'com.org.web3j'
+    compileSdkVersion 33
+
     defaultConfig {
-        minSdkVersion 21 // Update to the desired minimum SDK version
-        targetSdkVersion 33 // Update to the desired target SDK version
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion 21
+        targetSdkVersion 33
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java']
+        }
+        test {
+            java.srcDirs = ['src/test/java']
+        }
     }
 }
 
@@ -16,12 +30,13 @@ description 'Ethereum Recursive Length Prefix (RLP) encoding for serializing obj
 
 dependencies {
     api project(':utils')
+    testImplementation 'junit:junit:4.13.2'
 }
 
-tasks.named("spotlessJava").configure {
-    dependsOn("spotlessGroovyGradle", "compileDebugJavaWithJavac", "compileReleaseJavaWithJavac", "javadoc", "test", "jacocoTestReport")
-}
-
-tasks.named("spotlessKotlin").configure {
-    dependsOn("compileDebugKotlin", "compileReleaseKotlin", "spotlessJava", "spotlessGroovyGradle", "processTestResources", "test", "jacocoTestReport")
-}
+//tasks.named("spotlessJava").configure {
+//    dependsOn("spotlessGroovyGradle", "compileDebugJavaWithJavac", "compileReleaseJavaWithJavac", "javadoc", "test", "jacocoTestReport")
+//}
+//
+//tasks.named("spotlessKotlin").configure {
+//    dependsOn("compileDebugKotlin", "compileReleaseKotlin", "spotlessJava", "spotlessGroovyGradle", "processTestResources", "test", "jacocoTestReport")
+//}

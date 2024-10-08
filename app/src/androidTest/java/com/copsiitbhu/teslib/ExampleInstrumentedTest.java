@@ -1,4 +1,4 @@
-package com.copsiitbhu.teslib;
+package com.org.web3j;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.copsiitbhu.teslib", appContext.getPackageName());
+        assertEquals("com.org.web3j", appContext.getPackageName());
     }
 }

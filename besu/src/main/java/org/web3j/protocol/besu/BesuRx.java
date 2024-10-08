@@ -12,10 +12,10 @@
  */
 package org.web3j.protocol.besu;
 
-import io.reactivex.Flowable;
-
 import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.response.Log;
+
+import io.reactivex.Flowable;
 
 public interface BesuRx {
 

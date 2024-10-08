@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    namespace 'com.org.web3j'
     compileSdkVersion 33
 
     defaultConfig {
@@ -30,5 +31,6 @@ description 'web3j support for Ethereum Improvement Proposals (EIP\'s)'
 dependencies {
     implementation project(':core')
     testImplementation project(path: ':core', configuration: 'testArtifacts')
+    testImplementation 'junit:junit:4.13.2'
 }
 

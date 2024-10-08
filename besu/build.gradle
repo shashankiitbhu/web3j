@@ -3,13 +3,12 @@ plugins {
 }
 
 android {
+    namespace 'com.org.web3j'
     compileSdkVersion 33
 
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 33
-
-        // Other configurations, like versionCode, versionName, if required
     }
 
     sourceSets {
@@ -26,7 +25,6 @@ dependencies {
     api project(':eea')
     testImplementation project(path: ':core', configuration: 'testArtifacts')
 
-    // Android-specific dependencies
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

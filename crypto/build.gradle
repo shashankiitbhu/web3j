@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    namespace 'com.org.web3j'
     compileSdkVersion 33
 
     defaultConfig {
@@ -36,6 +37,7 @@ dependencies {
             "io.consensys.protocols:jc-kzg-4844:$kzg4844Version"
     implementation("io.tmio:tuweni-bytes:$tuweniVersion")
     implementation("io.tmio:tuweni-units:$tuweniVersion")
+    testImplementation 'junit:junit:4.13.2'
 }
 
 configurations { testArtifacts.extendsFrom testRuntime }

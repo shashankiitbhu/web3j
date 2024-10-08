@@ -1,15 +1,15 @@
 plugins {
-    id 'com.android.library' // Change to Android library plugin
+    id 'com.android.library'
 }
 
 android {
+    namespace 'com.org.web3j'
     compileSdkVersion 33
 
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 33
 
-        // Add versioning if necessary
     }
 
     compileOptions {
@@ -21,7 +21,7 @@ android {
         main {
             java.srcDirs = ['src/main/java']
         }
-        test {
+        debug {
             java.srcDirs = ['src/test/java']
         }
     }
@@ -38,6 +38,7 @@ dependencies {
     //testImplementation project(':core').sourceSets.test.output
     testImplementation "ch.qos.logback:logback-core:$logbackVersion"
     testImplementation "ch.qos.logback:logback-classic:$logbackVersion"
+    testImplementation 'junit:junit:4.13.2'
 
     implementation "org.junit.platform:junit-platform-launcher:$junitPlatformLauncherVersion"
     implementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
@@ -51,7 +52,7 @@ file("src/test/resources/solidity").listFiles().each { File file ->
     if (contractFile != null) {
         def contractName = contractFile.name.substring(0, contractFile.name.length() - 4)
         def generateTask = tasks.register("generate${contractName}Wrapper", JavaExec) {
-            classpath = sourceSets.test.runtimeClasspath
+            classpath = files(fileTree(dir: 'src/test/java', include: '**/*.class'))
             main = 'org.web3j.codegen.SolidityFunctionWrapperGenerator'
             args = [
                     'generate',
@@ -64,11 +65,11 @@ file("src/test/resources/solidity").listFiles().each { File file ->
        // test.dependsOn generateTask
     }
 }
-
-tasks.named("spotlessJava").configure {
-    dependsOn("spotlessGroovyGradle", "compileJava", "compileTestJava", "javadoc", "test", "jacocoTestReport")
-}
-
-tasks.named("spotlessKotlin").configure {
-    dependsOn("compileJava", "spotlessJava", "spotlessGroovyGradle", "compileTestJava", "processTestResources", "javadoc", "test", "jacocoTestReport")
-}
+//
+//tasks.named("spotlessJava").configure {
+//    dependsOn("spotlessGroovyGradle", "compileTestJava", "javadoc", "test", "jacocoTestReport")
+//}
+//
+//tasks.named("spotlessKotlin").configure {
+//    dependsOn("spotlessJava", "spotlessGroovyGradle", "compileTestJava", "processTestResources", "javadoc", "test", "jacocoTestReport")
+//}

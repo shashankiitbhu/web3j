@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.copsiitbhu.teslib'
+    namespace 'com.org.web3j'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.copsiitbhu.teslib"
+        applicationId "com.org.web3j"
         minSdk 24
         targetSdk 34
         versionCode 1

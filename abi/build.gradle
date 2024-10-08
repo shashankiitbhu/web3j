@@ -1,18 +1,18 @@
 plugins {
-    id 'com.android.library' // Change from java-library to android library
+    id 'com.android.library'
 }
 
 android {
+    namespace "com.org.web3j"
     compileSdkVersion 33
 
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 33
 
-        // Additional config if needed like versionCode and versionName
+
     }
 
-    // Define your source sets
     sourceSets {
         main {
             java.srcDirs = ['src/main/java']
@@ -31,9 +31,9 @@ android {
 description 'Ethereum Application Binary Interface (ABI) for working with smart contracts'
 
 dependencies {
-    api project(':utils') // Keep the project dependency as is
+    api project(':utils')
 
-    // Android-specific dependencies (add if necessary)
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

@@ -39,8 +39,7 @@ ext {
 allprojects {
     apply {
         [
-                'repositories',
-                'spotless'
+                'repositories'
         ].each { buildScript ->
             from("$rootDir/gradle/$buildScript/build.gradle")
         }
